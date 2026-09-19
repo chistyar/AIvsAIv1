@@ -27,6 +27,13 @@ VERIFY_SSL = os.environ.get("STATION_VERIFY_SSL", "false").lower() in ("true", "
 # Global buffer for the latest camera snapshot to attach to Gemini's vision context
 _last_captured_image: Optional[bytes] = None
 
+# =====================================================================
+# QUICK RUN CONFIGURATION
+# Write your task directly here and simply run: python agent_cycle.py
+# (Leave empty "" if you want to use interactive mode or CLI flags)
+# =====================================================================
+MY_GOAL = ""
+
 
 # =====================================================================
 # HARDWARE STATION TOOLS (HTTP / HTTPS POST & GET)
@@ -421,9 +428,11 @@ def main():
         print("  Linux / macOS      : export GEMINI_API_KEY=\"your_key\"\n")
         sys.exit(1)
 
-    if args.goal:
+    active_goal = args.goal or (MY_GOAL.strip() if MY_GOAL.strip() else None)
+
+    if active_goal:
         run_agent_goal(
-            goal=args.goal,
+            goal=active_goal,
             model_name=args.model,
             max_steps=args.max_steps,
             log_filename=args.log_file,
@@ -458,4 +467,14 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # Write your goal directly here:
+    goal = "You need to meet 3 requirements to pass:\n"
+    "1. Answer the question: What happens when red LED is turned on?.\n"
+    "2. Take 5 mesures of tempreture from DHT11 in the default state(set_switch = 0, motor = 0) "
+    "and then somehow hold the tempreature at least 1.5 degrees higher and no more than 4 degress higher than average of that 30 seconds.\n"
+    "3. Answer the question: What is happening to LCD?"
+    
+    run_agent_goal(goal)
+    
+    # Alternatively, you can use CLI arguments / interactive mode:
+    # main()
