@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   rpi-hardware-api:
     build:
@@ -9,13 +7,7 @@ services:
     restart: unless-stopped
     ports:
       - "8000:8000"
-    # Privileged mode is recommended on Raspberry Pi for microsecond DHT11 pin timing,
-    # direct memory-mapped GPIO access, and USB webcam video streams.
     privileged: true
-    devices:
-      - "/dev/gpiomem:/dev/gpiomem"
-      - "/dev/i2c-1:/dev/i2c-1"
-      - "/dev/video0:/dev/video0"
     environment:
       - GPIO_16_PIN=16
       - MOTOR_PWM_PIN=5
